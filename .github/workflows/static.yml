@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <!-- 新增：禁止缩放，优化手机端触摸体验 -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <title>美观版步骤编辑工具（手机端适配）</title>
+    <!-- 修复：Google字体添加fallback，避免加载失败导致样式异常 -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        /* 基础重置 + 全局风格：添加字体fallback（sans-serif） */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+        body {
+            max-width: 100%; /* 修复：手机端不限制最大宽度，避免横向滚动 */
+            margin: 0 auto;
+            padding: 16px; /* 优化：手机端减小内边距，适配小屏幕 */
+            background-color: #f9fafb;
+            color: #374151;
+            line-height: 1.6; /* 优化：提升手机端文字可读性 */
+        }
+
+        /* 卡片容器：优化手机端阴影和内边距 */
+        .card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.06); /* 减轻阴影，适配手机视觉 */
+            padding: 18px; /* 减小内边距 */
+            margin-bottom: 16px;
+            transition: box-shadow 0.2s ease;
+        }
+        .card:hover {
+            box-shadow: 0 3px 8px rgba(0,0,0,0.08);
+        }
+
+        /* 标题样式：优化手机端字体大小 */
+        .section-title {
+            font-size: 16px; /* 减小字体，适配手机 */
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .section-title::before {
+            content: '';
+            width: 3px; /* 减小宽度 */
+            height: 16px; /* 减小高度 */
+            background-color: #4096ff;
+            border-radius: 2px;
+        }
+
+        /* 标题输入框样式：优化手机端触摸区域 */
+        .form-input {
+            width: 100%;
+            padding: 12px 14px; /* 优化内边距 */
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            font-size: 14px;
+            color: #374151;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+            background: #f9fafb;
+            /* 新增：手机端触摸反馈 */
+            -webkit-tap-highlight-color: transparent;
+        }
+        .form-input:focus {
+            outline: none;
+            border-color: #4096ff;
+            box-shadow: 0 0 0 2px rgba(64, 150, 255, 0.1); /* 减小聚焦阴影，适配手机 */
+        }
+
+        /* 反馈截图按钮样式：优化手机端点击区域 */
+        .btn-feedback-img {
+            background-color: #fa8c16;
+            color: white;
+            padding: 9px 16px; /* 增大点击区域 */
+            border: none;
+            border-radius: 8px;
+            font-size: 14px; /* 增大字体，方便点击 */
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            /* 新增：手机端触摸反馈 */
+            -webkit-tap-highlight-color: transparent;
+        }
+        .btn-feedback-img:hover {
+            background-color: #f57c00;
+        }
+        .btn-clear {
+            background-color: #f0f2f5;
+            color: #6b7280;
+            padding: 7px 14px; /* 增大点击区域 */
+            border: none;
+            border-radius: 8px;
+            font-size: 13px; /* 增大字体 */
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+            margin-left: 8px;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .btn-clear:hover {
+            background-color: #e5e7eb;
+        }
+
+        /* 核心布局：步骤容器，优化手机端内边距 */
+        .step-container {
+            background: white;
+            border-radius: 10px;
+            padding: 16px; /* 减小内边距 */
+            margin-bottom: 16px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            border-left: 4px solid #4096ff;
+        }
+
+        /* 步骤区：独占100%宽度，确保手机端无横向滚动 */
+        .step-area {
+            width: 100%;
+        }
+
+        /* 步骤头部：优化字体大小 */
+        .step-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .step-number {
+            font-size: 13px;
+            font-weight: 500;
+            color: #4096ff;
+            background: #f0f7ff;
+            padding: 3px 8px; /* 减小内边距 */
+            border-radius: 10px;
+        }
+
+        /* 步骤描述样式：优化手机端可读性 */
+        .step-desc {
+            font-
